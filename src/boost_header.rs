@@ -11,8 +11,8 @@ pub enum BoostHeader {
     PushUrl(String),
     /// Can be used to do a client-side redirect to a new location
     Redirect(String),
-    /// If set to “true” the client-side will do a full refresh of the page
-    Refresh(String),
+    /// If set the client-side will do a full refresh of the page
+    Refresh,
     /// Replaces the current URL in the location bar
     ReplaceUrl(String),
     /// Allows you to specify how the response will be swapped. See hx-swap for possible values
@@ -36,7 +36,7 @@ impl From<&BoostHeader> for Header<'static> {
             BoostHeader::Location(value) => Header::new("HX-Location", value),
             BoostHeader::PushUrl(value) => Header::new("HX-Push-Url", value),
             BoostHeader::Redirect(value) => Header::new("HX-Redirect", value),
-            BoostHeader::Refresh(value) => Header::new("HX-Refresh", value),
+            BoostHeader::Refresh => Header::new("HX-Refresh", "true"),
             BoostHeader::ReplaceUrl(value) => Header::new("HX-Replace-Url", value),
             BoostHeader::Reswap(value) => Header::new("HX-Reswap", value),
             BoostHeader::Retarget(value) => Header::new("HX-Retarget", value),
