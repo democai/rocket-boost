@@ -1,6 +1,16 @@
 # rocket-boost
 A Rust crate to provide allow for HTMX boosted output with handlebars fallback
 
+In your Cargo.toml
+
+```toml
+[dependencies]
+rocket-boost = { git = "https://github.com/democai/rocket-boost.git" }
+tide-jsx = { git = "https://github.com/democai/tide-jsx.git" }
+```
+
+Then some sample code:
+
 ```rust
 use anyhow::Result;
 use rocket_boost::{Boosted, BoostedArgs, jsx::{rsx, Render}, hb::{set_template_path, load_template, load_partials}};
