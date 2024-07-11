@@ -19,5 +19,5 @@ where
     pub(super) headers: HashMap<String, String>,
     pub(super) boost_headers: Vec<BoostHeader>,
     pub(super) main_template_name: String,
-    pub(super) main_template_args: M,
+    pub(super) main_template_args: HashMap<String, M>,
 }

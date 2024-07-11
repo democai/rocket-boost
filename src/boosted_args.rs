@@ -17,7 +17,7 @@ where
     pub headers: HashMap<String, String>,
     pub boost_headers: Vec<BoostHeader>,
     pub main_template_name: String,
-    pub main_template_args: M,
+    pub main_template_args: HashMap<String, M>,
 }
 
 impl<R, M> Default for BoostedArgs<R, M>
@@ -33,7 +33,7 @@ where
             headers: HashMap::new(),
             boost_headers: Vec::new(),
             main_template_name: "main".to_string(),
-            main_template_args: M::default(),
+            main_template_args: HashMap::new(),
         }
     }
 }

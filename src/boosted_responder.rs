@@ -9,7 +9,7 @@ use serde::{de::DeserializeOwned, Serialize};
 use tide_jsx::Render;
 
 use super::boosted::Boosted;
-use crate::hb::render;
+use crate::{hb::render, MainTemplateArgsInternal};
 
 #[rocket::async_trait]
 impl<'r, R, M> Responder<'r, 'r> for Boosted<R, M>
@@ -37,10 +37,15 @@ where
                 response.ok()
             }
             false => {
+
+                let main_template_args_internal = MainTemplateArgsInternal::from_serializable(&self.title, &self.tree.render(), &self.main_template_args).map_err(|e| {
+                    log::error!("Error creating main template args: {:?}", e);
+                    Status::InternalServerError
+                })?;
                 let body = render(
                     &self.registry,
                     &self.main_template_name,
-                    &self.main_template_args,
+                    &main_template_args_internal,
                 )
                 .map_err(|e| {
                     log::error!("Error rendering main: {:?}", e);
