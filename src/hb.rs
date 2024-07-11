@@ -91,3 +91,8 @@ where
 
     Ok(rendered)
 }
+
+pub async fn set_template_path(path: PathBuf) {
+    let mut wo_cache = TEMPLATE_PATH.write().await;
+    *wo_cache = path;
+}
