@@ -13,3 +13,5 @@ pub use boost_header::*;
 
 // Reexport jsx
 pub use tide_jsx as jsx;
+
+pub type Result<T> = std::result::Result<T, rocket::response::Debug<anyhow::Error>>;

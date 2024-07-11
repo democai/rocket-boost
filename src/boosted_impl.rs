@@ -1,4 +1,5 @@
-use anyhow::{Context, Result};
+use crate::Result;
+use anyhow::Context;
 use serde::Serialize;
 use tide_jsx::Render;
 
@@ -15,12 +16,12 @@ where
     R: Render + Sized,
     M: Serialize + DeserializeOwned + Clone,
 {
-    pub async fn try_new(
-        args: BoostedArgs<R, M>,
-    ) -> Result<Self> {
+    pub async fn try_new(args: BoostedArgs<R, M>) -> Result<Self> {
         load_template(&args.main_template_name)
             .await
-            .with_context(|| format!("could not load main template: {}", args.main_template_name))?;
+            .with_context(|| {
+                format!("could not load main template: {}", args.main_template_name)
+            })?;
         let registry = get_registry().await;
 
         Ok(Self {
