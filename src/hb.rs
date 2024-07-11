@@ -76,11 +76,11 @@ pub async fn load_template(template_name: &str) -> Result<()> {
     Ok(())
 }
 
-pub(crate) async fn get_registry() -> Handlebars<'static> {
+pub async fn get_registry() -> Handlebars<'static> {
     TEMPLATE_CACHE.read().await.clone()
 }
 
-pub(crate) fn render<T>(registry: &Handlebars, template_name: &str, key_values: &T) -> Result<String>
+pub fn render<T>(registry: &Handlebars, template_name: &str, key_values: &T) -> Result<String>
 where
     T: Serialize,
 {
