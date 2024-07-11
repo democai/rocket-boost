@@ -1,6 +1,5 @@
 use crate::Result;
 use anyhow::Context;
-use serde::Serialize;
 use tide_jsx::Render;
 
 use crate::BoostedArgs;
@@ -9,14 +8,12 @@ use super::{
     boosted::Boosted,
     hb::{get_registry, load_template},
 };
-use serde::de::DeserializeOwned;
 
-impl<R, M> Boosted<R, M>
+impl<R> Boosted<R>
 where
     R: Render + Sized,
-    M: Serialize + DeserializeOwned + Clone,
 {
-    pub async fn try_new(args: BoostedArgs<R, M>) -> Result<Self> {
+    pub async fn try_new(args: BoostedArgs<R>) -> Result<Self> {
         load_template(&args.main_template_name)
             .await
             .with_context(|| {

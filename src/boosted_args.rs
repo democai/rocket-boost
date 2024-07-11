@@ -1,15 +1,12 @@
 use rocket::http::Status;
-use serde::de::DeserializeOwned;
-use serde::Serialize;
 use std::collections::HashMap;
 use tide_jsx::Render;
 
 use crate::BoostHeader;
 
-pub struct BoostedArgs<R, M>
+pub struct BoostedArgs<R>
 where
     R: Render + Sized,
-    M: Serialize + DeserializeOwned + Clone,
 {
     pub code: Status,
     pub title: String,
@@ -17,13 +14,12 @@ where
     pub headers: HashMap<String, String>,
     pub boost_headers: Vec<BoostHeader>,
     pub main_template_name: String,
-    pub main_template_args: HashMap<String, M>,
+    pub main_template_args: HashMap<String, serde_json::Value>,
 }
 
-impl<R, M> Default for BoostedArgs<R, M>
+impl<R> Default for BoostedArgs<R>
 where
     R: Render + Sized,
-    M: Serialize + DeserializeOwned + Clone + Default,
 {
     fn default() -> Self {
         Self {

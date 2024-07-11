@@ -5,17 +5,15 @@ use rocket::{
     response::Responder,
     Request, Response,
 };
-use serde::{de::DeserializeOwned, Serialize};
 use tide_jsx::Render;
 
 use super::boosted::Boosted;
 use crate::{hb::render, MainTemplateArgsInternal};
 
 #[rocket::async_trait]
-impl<'r, R, M> Responder<'r, 'r> for Boosted<R, M>
+impl<'r, R> Responder<'r, 'r> for Boosted<R>
 where
     R: Render + Sized,
-    M: Serialize + DeserializeOwned + Clone,
 {
     fn respond_to(self, request: &'r Request<'_>) -> rocket::response::Result<'static> {
         let boosted = request.headers().get_one("HX-Request") == Some("true");
