@@ -33,11 +33,30 @@ where
         })
     }
 
+    /// Creates a new `Boosted` instance for a redirect response.
+    ///
+    /// This method sets up a redirect to the specified URL, optionally including additional Boost headers.
+    ///
+    /// # Arguments
+    ///
+    /// * `url` - The URL to redirect to.
+    /// * `opt_boost_headers` - Optional additional Boost headers to include in the response.
+    ///
+    /// # Returns
+    ///
+    /// A `Result` containing the new `Boosted` instance, or an error if creation fails.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// let redirect = Boosted::<Option<String>>::redirect("/example".to_string(), None).await;
+    /// return redirect;
+    /// ```
     pub async fn redirect(
         url: String,
         opt_boost_headers: Option<Vec<BoostHeader>>,
     ) -> Result<Boosted<Option<String>>> {
-        let url_str = url.to_string();
+        let url_str = url.clone();
         let mut boost_headers = vec![BoostHeader::Location(url_str.clone())];
         if let Some(boost_header_vec) = opt_boost_headers {
             for boost_header in boost_header_vec {
