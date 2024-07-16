@@ -7,7 +7,7 @@ use super::{
     boosted::Boosted,
     hb::{get_registry, load_template},
 };
-use crate::{BoostHeader, BoostedArgs, Result};
+use crate::{BoostHeader, BoostedArgs, RedirectType, Result};
 
 impl<R> Boosted<R>
 where
@@ -39,6 +39,7 @@ where
     ///
     /// # Arguments
     ///
+    /// * `redirect_type` - The type of redirect (Temporary or Permanent).
     /// * `url` - The URL to redirect to.
     /// * `opt_boost_headers` - Optional additional Boost headers to include in the response.
     ///
@@ -49,10 +50,12 @@ where
     /// # Example
     ///
     /// ```
-    /// let redirect = Boosted::<Option<String>>::redirect("/example".to_string(), None).await;
+    /// let redirect = Boosted::<Option<String>>::redirect(RedirectType::Temporary, "/example".to_string(), None).await;
     /// return redirect;
     /// ```
+    /// 
     pub async fn redirect(
+        redirect_type: RedirectType,
         url: String,
         opt_boost_headers: Option<Vec<BoostHeader>>,
     ) -> Result<Boosted<Option<String>>> {
@@ -63,7 +66,12 @@ where
                 boost_headers.push(boost_header);
             }
         }
+        let code = match redirect_type {
+            RedirectType::Temporary => rocket::http::Status::Found,
+            RedirectType::Permanent => rocket::http::Status::MovedPermanently,
+        };
         Boosted::try_new(BoostedArgs::<Option<String>> {
+            code,
             title: "".to_string(),
             headers: HashMap::from([("Location".to_string(), url_str)]),
             boost_headers,

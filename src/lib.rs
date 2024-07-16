@@ -17,3 +17,8 @@ pub(crate) use main_template_args::*;
 pub use tide_jsx as jsx;
 
 pub type Result<T> = std::result::Result<T, rocket::response::Debug<anyhow::Error>>;
+
+pub enum RedirectType {
+    Temporary,
+    Permanent,
+}
