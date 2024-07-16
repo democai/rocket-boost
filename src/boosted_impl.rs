@@ -36,7 +36,7 @@ where
     pub async fn redirect(
         url: &str,
         opt_boost_headers: Option<Vec<BoostHeader>>,
-    ) -> Result<Boosted<Option<&str>>> {
+    ) -> Result<Boosted<impl Render + Sized>> {
         let url_str = url.to_string();
         let mut boost_headers = vec![BoostHeader::Location(url_str.clone())];
         if let Some(boost_header_vec) = opt_boost_headers {
