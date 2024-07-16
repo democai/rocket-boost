@@ -1,5 +1,6 @@
-use rocket::http::Status;
 use std::collections::HashMap;
+
+use rocket::http::Status;
 use tide_jsx::Render;
 
 use crate::BoostHeader;

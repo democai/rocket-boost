@@ -50,7 +50,8 @@ pub async fn load_partials(partials: HashMap<&str, PathBuf>) -> Result<()> {
     let template_path = TEMPLATE_PATH.read().await;
     for (name, path) in partials {
         let full_path = template_path.join(path);
-        let template = fs::read_to_string(&full_path).with_context(|| format!("could not read partial file: {}: {:?}", name, full_path))?;
+        let template = fs::read_to_string(&full_path)
+            .with_context(|| format!("could not read partial file: {}: {:?}", name, full_path))?;
         wo_cache.register_partial(name, template)?;
     }
     Ok(())

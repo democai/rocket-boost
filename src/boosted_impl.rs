@@ -1,13 +1,13 @@
-use crate::Result;
+use std::collections::HashMap;
+
 use anyhow::Context;
 use tide_jsx::Render;
-
-use crate::BoostedArgs;
 
 use super::{
     boosted::Boosted,
     hb::{get_registry, load_template},
 };
+use crate::{BoostHeader, BoostedArgs, Result};
 
 impl<R> Boosted<R>
 where
@@ -31,5 +31,25 @@ where
             main_template_name: args.main_template_name,
             main_template_args: args.main_template_args,
         })
+    }
+
+    pub async fn redirect(
+        url: &str,
+        opt_boost_headers: Option<Vec<BoostHeader>>,
+    ) -> Result<Boosted<impl Render>> {
+        let url_str = url.to_string();
+        let mut boost_headers = vec![BoostHeader::Location(url_str.clone())];
+        if let Some(boost_header_vec) = opt_boost_headers {
+            for boost_header in boost_header_vec {
+                boost_headers.push(boost_header);
+            }
+        }
+        Boosted::try_new(BoostedArgs::<R> {
+            title: "".to_string(),
+            headers: HashMap::from([("Location".to_string(), url_str)]),
+            boost_headers,
+            ..Default::default()
+        })
+        .await
     }
 }

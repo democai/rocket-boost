@@ -35,8 +35,12 @@ where
                 response.ok()
             }
             false => {
-
-                let main_template_args_internal = MainTemplateArgsInternal::from_serializable(&self.title, &self.tree.render(), &self.main_template_args).map_err(|e| {
+                let main_template_args_internal = MainTemplateArgsInternal::from_serializable(
+                    &self.title,
+                    &self.tree.render(),
+                    &self.main_template_args,
+                )
+                .map_err(|e| {
                     log::error!("Error creating main template args: {:?}", e);
                     Status::InternalServerError
                 })?;

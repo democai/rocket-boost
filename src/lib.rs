@@ -13,7 +13,6 @@ pub use boost_header::*;
 
 mod main_template_args;
 pub(crate) use main_template_args::*;
-
 // Reexport jsx
 pub use tide_jsx as jsx;
 

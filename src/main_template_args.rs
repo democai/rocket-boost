@@ -1,9 +1,10 @@
-use anyhow::Result;
-use serde::Serialize;
 use std::{
     collections::HashMap,
     time::{SystemTime, UNIX_EPOCH},
 };
+
+use anyhow::Result;
+use serde::Serialize;
 
 #[derive(Debug, Clone)]
 pub(super) struct MainTemplateArgsInternal();
@@ -67,5 +68,3 @@ impl<T: Serialize> Serialize for StringOrT<T> {
         }
     }
 }
-
-
