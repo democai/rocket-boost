@@ -11,7 +11,7 @@ pub enum BoostedOption
 }
 
 impl BoostedOption {
-    pub fn from_tree(tree: impl Render + 'static) -> Self {
+    pub fn from_tree(tree: impl Render + 'static + Send + Sync) -> Self {
         BoostedOption::Render(Arc::new(Box::new(tree)))
     }
 }
