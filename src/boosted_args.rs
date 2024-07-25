@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use rocket::http::Status;
 use tide_jsx::Render;
 
-use crate::BoostHeader;
+use crate::{BoostHeader, BoostedOption};
 
 pub struct BoostedArgs<R>
 where
@@ -11,7 +11,7 @@ where
 {
     pub code: Status,
     pub title: String,
-    pub tree: Option<R>,
+    pub tree: BoostedOption<R>,
     pub headers: HashMap<String, String>,
     pub boost_headers: Vec<BoostHeader>,
     pub main_template_name: String,
@@ -26,7 +26,7 @@ where
         Self {
             code: Status::Ok,
             title: "".to_string(),
-            tree: None,
+            tree: BoostedOption::None,
             headers: HashMap::new(),
             boost_headers: Vec::new(),
             main_template_name: "main".to_string(),

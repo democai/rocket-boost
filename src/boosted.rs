@@ -4,7 +4,7 @@ use handlebars::Handlebars;
 use rocket::http::Status;
 use tide_jsx::Render;
 
-use crate::BoostHeader;
+use crate::{BoostHeader, BoostedOption};
 
 pub struct Boosted<R>
 where
@@ -13,7 +13,7 @@ where
     pub(super) registry: Handlebars<'static>,
     pub(super) code: Status,
     pub(super) title: String,
-    pub(super) tree: Option<R>,
+    pub(super) tree: BoostedOption<R>,
     pub(super) headers: HashMap<String, String>,
     pub(super) boost_headers: Vec<BoostHeader>,
     pub(super) main_template_name: String,

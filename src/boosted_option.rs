@@ -5,6 +5,7 @@ pub enum BoostedOption<B>
 where
     B: Render + Sized,
 {
+    None,
     Redirect,
     Render(B),
 }
@@ -15,15 +16,15 @@ where
 {
     fn render(self) -> String {
         match self {
-            BoostedOption::Redirect => "".to_string(),
             BoostedOption::Render(b) => b.render(),
+            _ => "".to_string(),
         }
     }
 
     fn render_into<W: std::fmt::Write>(self, writer: &mut W) -> Result<(), std::fmt::Error> {
         match self {
-            BoostedOption::Redirect => "".render_into(writer),
             BoostedOption::Render(b) => b.render_into(writer),
+            _ => Ok(()),
         }
     }
 }

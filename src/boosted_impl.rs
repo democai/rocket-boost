@@ -49,10 +49,14 @@ where
     ///
     /// # Example
     ///
+    /// Create a function that returns Result<Boosted<BoostedOption<impl Render + 'r>>>
     /// ```
-    /// let redirect = Boosted::<Option<String>>::redirect(RedirectType::Temporary, "/example".to_string(), None).await;
+    /// let redirect = Boosted::redirect(RedirectType::Temporary, "/example".to_string(), None).await;
     /// return redirect;
     /// ```
+    /// If you need to return something else sometimes, use `tree: Some(BoostedOption::Render(tree)),`
+    /// or `to_boosted_option()` on your `Boosted` instance, but that requires a Clone
+    /// 
     /// 
     pub async fn redirect(
         redirect_type: RedirectType,
@@ -75,27 +79,10 @@ where
             title: "".to_string(),
             headers: HashMap::from([("Location".to_string(), url_str)]),
             boost_headers,
-            tree: None,
+            tree: BoostedOption::Redirect,
             ..Default::default()
         })
         .await?;
         Ok(redirect)
-    }
-
-    pub fn to_boosted_option(&self) -> Result<Boosted<BoostedOption<R>>> 
-    where
-        R: Clone,
-    {
-        let new_tree = self.tree.clone().map(|tree| BoostedOption::Render(tree.clone()));
-        Ok(Boosted {
-            registry: self.registry.clone(),
-            code: self.code,
-            title: self.title.clone(),
-            tree: new_tree,
-            headers: self.headers.clone(),
-            boost_headers: self.boost_headers.clone(),
-            main_template_name: self.main_template_name.clone(),
-            main_template_args: self.main_template_args.clone(),
-        })
     }
 }
