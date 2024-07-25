@@ -7,7 +7,7 @@ use super::{
     boosted::Boosted,
     hb::{get_registry, load_template},
 };
-use crate::{BoostHeader, BoostedArgs, RedirectType, Result};
+use crate::{BoostHeader, BoostedArgs, RedirectType, Result, BoostedOption};
 
 impl<R> Boosted<R>
 where
@@ -58,7 +58,7 @@ where
         redirect_type: RedirectType,
         url: String,
         opt_boost_headers: Option<Vec<BoostHeader>>,
-    ) -> Result<Boosted<Option<String>>> {
+    ) -> Result<Boosted<BoostedOption<R>>> {
         let url_str = url.clone();
         let mut boost_headers = vec![BoostHeader::Location(url_str.clone())];
         if let Some(boost_header_vec) = opt_boost_headers {
@@ -70,7 +70,7 @@ where
             RedirectType::Temporary => rocket::http::Status::Found,
             RedirectType::Permanent => rocket::http::Status::MovedPermanently,
         };
-        Boosted::try_new(BoostedArgs::<Option<String>> {
+        let redirect = Boosted::try_new(BoostedArgs::<BoostedOption<R>> {
             code,
             title: "".to_string(),
             headers: HashMap::from([("Location".to_string(), url_str)]),
@@ -78,6 +78,24 @@ where
             tree: None,
             ..Default::default()
         })
-        .await
+        .await?;
+        Ok(redirect)
+    }
+
+    pub fn to_boosted_option(&self) -> Result<Boosted<BoostedOption<R>>> 
+    where
+        R: Clone,
+    {
+        let new_tree = self.tree.clone().map(|tree| BoostedOption::Render(tree.clone()));
+        Ok(Boosted {
+            registry: self.registry.clone(),
+            code: self.code,
+            title: self.title.clone(),
+            tree: new_tree,
+            headers: self.headers.clone(),
+            boost_headers: self.boost_headers.clone(),
+            main_template_name: self.main_template_name.clone(),
+            main_template_args: self.main_template_args.clone(),
+        })
     }
 }

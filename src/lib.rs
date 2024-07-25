@@ -5,6 +5,9 @@ pub mod hb;
 mod boosted;
 pub use boosted::*;
 
+mod boosted_option;
+pub use boosted_option::*;
+
 mod boosted_args;
 pub use boosted_args::*;
 
