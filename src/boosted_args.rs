@@ -1,26 +1,21 @@
 use std::collections::HashMap;
 
 use rocket::http::Status;
-use tide_jsx::Render;
 
 use crate::{BoostHeader, BoostedOption};
 
-pub struct BoostedArgs<R>
-where
-    R: Render + Sized,
+pub struct BoostedArgs
 {
     pub code: Status,
     pub title: String,
-    pub tree: BoostedOption<R>,
+    pub tree: BoostedOption,
     pub headers: HashMap<String, String>,
     pub boost_headers: Vec<BoostHeader>,
     pub main_template_name: String,
     pub main_template_args: HashMap<String, serde_json::Value>,
 }
 
-impl<R> Default for BoostedArgs<R>
-where
-    R: Render + Sized,
+impl Default for BoostedArgs
 {
     fn default() -> Self {
         Self {

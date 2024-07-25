@@ -1,27 +1,27 @@
-use tide_jsx::Render;
+use std::sync::Arc;
+
+use tide_jsx::{BoxedRender, Render};
 
 #[derive(Clone)]
-pub enum BoostedOption<B>
-where
-    B: Render + Sized,
+pub enum BoostedOption
 {
     None,
     Redirect,
-    Render(B),
+    Render(Arc<BoxedRender>),
 }
 
-impl<B> Render for BoostedOption<B>
-where
-    B: Render + Sized,
+
+
+impl Render for BoostedOption
 {
-    fn render(self) -> String {
+    fn render(&self) -> String {
         match self {
             BoostedOption::Render(b) => b.render(),
             _ => "".to_string(),
         }
     }
 
-    fn render_into<W: std::fmt::Write>(self, writer: &mut W) -> Result<(), std::fmt::Error> {
+    fn render_into(&self, writer: &mut String) -> Result<(), std::fmt::Error> {
         match self {
             BoostedOption::Render(b) => b.render_into(writer),
             _ => Ok(()),
