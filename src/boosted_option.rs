@@ -10,6 +10,12 @@ pub enum BoostedOption
     Render(Arc<BoxedRender>),
 }
 
+impl BoostedOption {
+    pub fn from_tree(tree: impl Render + 'static) -> Self {
+        BoostedOption::Render(Arc::new(Box::new(tree)))
+    }
+}
+
 
 
 impl Render for BoostedOption
