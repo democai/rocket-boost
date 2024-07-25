@@ -11,7 +11,7 @@ use super::boosted::Boosted;
 use crate::{hb::render, MainTemplateArgsInternal};
 
 #[rocket::async_trait]
-impl<'r> Responder<'r, 'r> for Boosted
+impl<'r> Responder<'r, 'r> for Boosted<'r>
 {
     fn respond_to(self, request: &'r Request<'_>) -> rocket::response::Result<'static> {
         let boosted = request.headers().get_one("HX-Request") == Some("true");

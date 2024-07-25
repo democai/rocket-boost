@@ -8,9 +8,9 @@ use super::{
 };
 use crate::{BoostHeader, BoostedArgs, RedirectType, Result, BoostedOption};
 
-impl Boosted
+impl<'a> Boosted<'a>
 {
-    pub async fn try_new(args: BoostedArgs) -> Result<Self> {
+    pub async fn try_new(args: BoostedArgs<'a>) -> Result<Self> {
         load_template(&args.main_template_name)
             .await
             .with_context(|| {
@@ -59,7 +59,7 @@ impl Boosted
         redirect_type: RedirectType,
         url: String,
         opt_boost_headers: Option<Vec<BoostHeader>>,
-    ) -> Result<Boosted> {
+    ) -> Result<Boosted<'a>> {
         let url_str = url.clone();
         let mut boost_headers = vec![BoostHeader::Location(url_str.clone())];
         if let Some(boost_header_vec) = opt_boost_headers {

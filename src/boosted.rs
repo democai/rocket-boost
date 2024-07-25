@@ -5,12 +5,12 @@ use rocket::http::Status;
 
 use crate::{BoostHeader, BoostedOption};
 
-pub struct Boosted
+pub struct Boosted<'a>
 {
     pub(super) registry: Handlebars<'static>,
     pub(super) code: Status,
     pub(super) title: String,
-    pub(super) tree: BoostedOption,
+    pub(super) tree: BoostedOption<'a>,
     pub(super) headers: HashMap<String, String>,
     pub(super) boost_headers: Vec<BoostHeader>,
     pub(super) main_template_name: String,

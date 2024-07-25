@@ -1,25 +1,21 @@
 use std::sync::Arc;
 
-use tide_jsx::{BoxedRender, Render};
+use tide_jsx::Render;
 
 #[derive(Clone)]
-pub enum BoostedOption
-{
+pub enum BoostedOption<'a> {
     None,
     Redirect,
-    Render(Arc<BoxedRender>),
+    Render(Arc<Box<dyn Render + 'a>>),
 }
 
-impl BoostedOption {
-    pub fn from_tree(tree: impl Render + 'static + Send + Sync) -> Self {
+impl<'a> BoostedOption<'a> {
+    pub fn from_tree(tree: impl Render + 'a + Send + Sync) -> Self {
         BoostedOption::Render(Arc::new(Box::new(tree)))
     }
 }
 
-
-
-impl Render for BoostedOption
-{
+impl<'a> Render for BoostedOption<'a> {
     fn render(&self) -> String {
         match self {
             BoostedOption::Render(b) => b.render(),

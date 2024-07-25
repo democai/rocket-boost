@@ -4,18 +4,18 @@ use rocket::http::Status;
 
 use crate::{BoostHeader, BoostedOption};
 
-pub struct BoostedArgs
+pub struct BoostedArgs<'a>
 {
     pub code: Status,
     pub title: String,
-    pub tree: BoostedOption,
+    pub tree: BoostedOption<'a>,
     pub headers: HashMap<String, String>,
     pub boost_headers: Vec<BoostHeader>,
     pub main_template_name: String,
     pub main_template_args: HashMap<String, serde_json::Value>,
 }
 
-impl Default for BoostedArgs
+impl<'a> Default for BoostedArgs<'a>
 {
     fn default() -> Self {
         Self {
